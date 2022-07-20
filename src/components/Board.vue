@@ -1,11 +1,11 @@
 <template>
   <div v-if="game" class="d-flex flex-column">
-  <div class="d-flex flex-wrap m-5">
-    <div v-for="(n, i) in dimensioniBoard" v-bind:key="i">
-      <div v-for="(n, j) in dimensioniBoard" v-bind:key="j">
-        <cell @click="performMove(i, j)" :value="board[i][j]"></cell>
+    <div class="d-flex flex-wrap m-5">
+      <div v-for="(n, i) in dimensioniBoard" v-bind:key="i">
+        <div v-for="(n, j) in dimensioniBoard" v-bind:key="j">
+          <cell @click="performMove(i, j)" :value="board[i][j]"></cell>
       </div>
-    </div>
+      </div>
     </div>
     <button @click="resetBoard()" class="btn btn-primary w-50 mx-auto">reset</button>
   </div>
@@ -21,14 +21,12 @@
 
 <script>
 export default {
-  //setup() {},
   data() {
     const dimensioniBoard = 3;
-
     const board = this.createBoard(dimensioniBoard);
-  const game = false;
+    const game = false;
+    
     return {
-      // dimensioniBoard: dimensioniBoard,
       game,
       dimensioniBoard,
       board,
@@ -36,36 +34,33 @@ export default {
     };
   },
   methods: {
+  
     performMove(x, y) {
       if (this.board[x][y] !== "") {
         return;
       }
       console.log("perf", x, y);
-
       if (this.turnOrder % 2 !== 0) {
         this.board[x][y] = "X";
       } else {
         this.board[x][y] = "O";
       }
-
       this.board = [...this.board];
-      // this.$forceUpdate();
-      this.checkWinnerBasic();
+      this.checkWinner();
       this.turnOrder++;
     },
-    checkWinnerBasic() {
+    
+    checkWinner() {
       let player;
       let colCounter = 0;
       let rowCounter = 0;
       let mainDiag = 0;
       let secDiag = 0;
-
       if (this.turnOrder % 2 == 0) {
         player = "O";
       } else {
         player = "X";
-      }
-
+      
       for (let row = 0; row < this.dimensioniBoard; row++) {
         rowCounter = 0;
         colCounter = 0;
@@ -78,7 +73,6 @@ export default {
             rowCounter++;
           }
         }
-
         if (
           colCounter === this.dimensioniBoard ||
           rowCounter === this.dimensioniBoard
@@ -108,9 +102,7 @@ export default {
         }
       }
     },
-    checkWinnerNormal() {},
-
-    checkWinnerAdvanced() {},
+    
     createBoard(dimensioniBoard) {
       let board = [];
       for (let i = 0; i < dimensioniBoard; i++) {
@@ -118,11 +110,11 @@ export default {
         for (let j = 0; j < dimensioniBoard; ++j) {
           riga[j] = "";
         }
-
         board[i] = riga;
       }
       return board;
     },
+    
     resetBoard() {
       this.board = this.createBoard(this.dimensioniBoard);
     },
